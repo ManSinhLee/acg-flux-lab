@@ -4,7 +4,7 @@ metadata:
   name: turtle-deployment
   namespace: default
 spec:
-  replicas: 30
+  replicas: 20
   selector:
     matchLabels:
       app: turtle
