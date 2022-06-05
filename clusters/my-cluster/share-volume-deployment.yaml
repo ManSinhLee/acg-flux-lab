@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: share
+  name: share-volume-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: share
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: share
+    spec:
+      volumes:
+      - name: share-volume
+        emptyDir: {}
+      containers:
+      - name: nginx
+        image: nginx:stable
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: share-volume
+          mountPath: /usr/share/nginx/html
+      - name: busybox
+        image: radial/busyboxplus:curl
+        command: ['sh', '-c', 'hostname -i >/mnt/www/html/index.html; sleep 3600']
+        volumeMounts:
+        - name: share-volume
+          mountPath: /mnt/www/html
+status: {}
